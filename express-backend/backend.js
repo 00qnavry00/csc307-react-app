@@ -44,8 +44,8 @@ app.use(express.json());
 
 app.post('/users', (req, res) => {
     const userToAdd = req.body;
-    addUser(userToAdd);
-    res.status(201).end();
+    const new_entry = addUser(userToAdd);
+    res.status(201).send(new_entry).end();
 });
 
 app.delete('/users/:id', (req, res) => {
@@ -96,7 +96,9 @@ function getRandomInt(max) {
 
 function addUser(user){
     const id = getRandomInt(1000);
-    users['users_list'].push({"id": id, "name": user.name, "job": user.job});
+    const new_entry = {"id": id, "name": user.name, "job": user.job};
+    users['users_list'].push(new_entry);
+    return new_entry;
 }
 
 

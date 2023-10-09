@@ -8,7 +8,6 @@ import React, {useState} from 'react';
 function Form(props) {
   const [person, setPerson] = useState(
      { 
-        id: props.id, 
         name: "",
         job: "",
      }
