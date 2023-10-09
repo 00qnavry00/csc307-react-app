@@ -17,6 +17,19 @@ function MyApp() {
           }
         }
 
+
+
+        async function makeRemovalCall(id){
+          try {
+             const response = await axios.delete('http://localhost:8000/users/'+id);
+             return response;
+          }
+          catch (error) {
+             console.log(error);
+             return false;
+          }
+        }
+
  
         useEffect(() => {
           fetchAll().then( result => {
@@ -37,17 +50,24 @@ function MyApp() {
         }
         function updateList(person) { 
           makePostCall(person).then( result => {
-          if (result && result.status === 200)
+          if (result && result.status === 201)
              setCharacters([...characters, person] );
           });
         }
 
-	function removeOneCharacter (index) {
-	    const updated = characters.filter((character, i) => {
-	        return i !== index
-	    });
-	  setCharacters(updated);
+	async function removeOneCharacter (index) {
+          const everything = await fetchAll();
+          const id = everything[index].id;
+          console.log(id);
+          await makeRemovalCall(id).then( result => {
+          if (result && result.status === 204){
+             const updated = characters.filter((character, i) => {
+                return i !== index
+             });
+             setCharacters(updated);}
+          });
 	}
+       
         return (
           <div className="container">
             <Table characterData={characters} 

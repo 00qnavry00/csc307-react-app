@@ -45,13 +45,17 @@ app.use(express.json());
 app.post('/users', (req, res) => {
     const userToAdd = req.body;
     addUser(userToAdd);
-    res.status(200).end();
+    res.status(201).end();
 });
 
 app.delete('/users/:id', (req, res) => {
     const id = req.params['id']; 
-    removeUserById(id);
-    res.status(200).end(); 
+    let result = removeUserById(id);
+    if (result === undefined || result.length == 0)
+        res.status(404).send('Resource not found.').end();
+    else {
+        res.status(204).send('Deletion successfull.').end();
+    }
 });
 
 app.get('/users', (req, res) => {
@@ -82,10 +86,17 @@ app.get('/users/:id', (req, res) => {
 function removeUserById(id){
     const index = users['users_list'].findIndex(entry => entry.id === id);
     users['users_list'].splice(index,1);
+    return index;
+}
+
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
 }
 
 function addUser(user){
-    users['users_list'].push(user);
+    const id = getRandomInt(1000);
+    users['users_list'].push({"id": id, "name": user.name, "job": user.job});
 }
 
 
