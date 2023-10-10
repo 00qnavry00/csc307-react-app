@@ -91,7 +91,13 @@ function removeUserById(id){
 
 
 function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+    let isIdPresent = true;
+    let new_id;
+    while(isIdPresent===true){
+        new_id = Math.floor(Math.random() * max);
+        isIdPresent = users.users_list.some(user => user.id === new_id); 
+    }
+    return new_id
 }
 
 function addUser(user){

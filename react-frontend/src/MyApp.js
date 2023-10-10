@@ -59,7 +59,6 @@ function MyApp() {
 	async function removeOneCharacter (index) {
           const everything = await fetchAll();
           const id = everything[index].id;
-          console.log(id);
           await makeRemovalCall(id).then( result => {
           if (result && result.status === 204){
              const updated = characters.filter((character, i) => {
